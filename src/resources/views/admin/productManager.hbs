@@ -1,0 +1,137 @@
+<div class="product-manager-page">
+    {{> userAccount}}
+        <div class="app__container">
+        <div class="app__content">
+            <div class="product-category">
+                <h3 class="product-heading">
+                    <i class="product-heading-icon fas fa-laptop"></i>Laptop
+                </h3>
+                <ul class="product-list">
+                    {{#each brandList}}
+                    <li class="product-item product-item--active">
+                        <a href="/admin/product-manager/brand/{{this.name}}" class="product-item__link">Laptop {{this.name}}</a>
+                    </li>
+                    {{/each}}                     
+                </ul>
+            </div>
+            <div class="laptop-list">
+                <div class="admin-home-product">
+                    <a href="/admin/product/add">
+                        <button class="home-product__btn btn">
+                            Thêm sản phẩm
+                        </button>
+                    </a>
+                </div>
+                <div class="home-laptop">
+                    {{#each laptopList}}
+                    <div class="part_column-2-4">
+                        <a class="home-laptop-item" href="/product/{{this.product_id}}" >
+                            <div class="home-laptop-item__img" style="background-image: url({{this.image}}) ;">
+                                <h4 class="home-laptop-item__name">{{this.name}}</h4>
+                                <div class="home-laptop-item__price">
+                                    {{!-- <span class="home-laptop-item__price-old">{{this.dongia}}</span><br> --}}
+                                    <span id="laptop-price" class="home-laptop-item__price-new">{{this.price}}</span>
+                                </div>
+                                <div class="home-laptop-item__status">{{this.status}}</div>
+                            </div>
+                        </a>
+                        <div class="edit-delete">
+                            <button type="button" class="edit-button btn ">
+                                <a href="/admin/product/edit/{{this.product_id}}">
+                                    <i class="fas fa-pen"></i> 
+                                    Sửa
+                                </a>
+                            </button>
+                            <button type="button" class="delete-button btn ">
+                                <a data-id="{{this.product_id}}" data-toggle="modal" data-target="#delete-order-modal" class="order-del-btn">
+                                    <i class="far fa-trash-alt"></i>
+                                    Xóa
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <p id="editProductSuccess" style="display: none;">{{@root.editProductSuccess}}</p>
+        </div>
+    </div>
+    {{>footer}}     
+</div>
+
+<form name="delete-order-form" method="POST"></form>
+{{!-- Comfirm delete order --}}
+<div id="delete-order-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa vĩnh viễn sản phẩm?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Hành động này không thể khôi phục lại. Bạn vẫn muốn xóa sản phẩm này?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-order" type="button" class="btn btn-danger">Xóa vĩnh viễn</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded',function() {
+        var laptopPriceList = document.querySelectorAll('#laptop-price');
+        laptopPriceList.forEach((item) => {
+            var price = item.textContent;
+            var editPrice = '';
+            var count = 0;
+            for (var i = 0; i < price.length; i++) {
+                if (i < price.length % 3) {
+                    editPrice = editPrice.concat(price[i])
+                } else if (i === price.length % 3 || count % 3 === 0) {
+                    editPrice = editPrice.concat('.',price[i])
+                    count += 1;
+                } else {
+                    editPrice = editPrice.concat(price[i])
+                    count += 1;
+                }
+            }
+            item.textContent = editPrice;
+        })
+
+        var laptopStatusList =  document.querySelectorAll('.home-laptop-item__status');
+        laptopStatusList.forEach((item) => {
+            if(item.textContent.includes('new')) {
+                item.textContent = 'new';
+            } else {
+                item.style.display = 'none';
+            }
+        })
+
+        const editProductSuccess = document.getElementById('editProductSuccess').textContent;
+        if (editProductSuccess == 'true') {
+            alert('Cập nhật sản phẩm thành công!')
+        } else if (editProductSuccess == 'false') {
+            alert('Cập nhật sản phẩm thất bại!')
+        }
+
+        let orderId;
+        const deleteForm = document.forms['delete-order-form'];
+        const btnDeleteOrder = document.getElementById('btn-delete-order');
+        const deleteOrdeForm = document.querySelector('#delete-order-modal');
+        $('#delete-order-modal').on('show.bs.modal', function (event) {
+            const button =  $(event.relatedTarget)
+            orderId = button.data('id') 
+        })
+
+        //When delete order btn clicked
+        btnDeleteOrder.onclick = function () {
+            deleteForm.action = "/admin/product/delete/" + orderId + "?_method=DELETE";
+            deleteForm.submit();
+        }
+    })
+
+</script>

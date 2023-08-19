@@ -1,0 +1,191 @@
+<div class="edit-product-page">
+    {{> userAccount}}
+    <h2 class="edit-page-heading">CẬP NHẬT THÔNG TIN SẢN PHẨM</h2>
+    <form name="edit-form" class="infor-product" method="POST" action='/admin/product/edit/{{product.product_id}}?_method=PUT'>
+        <div class="name-product">
+                <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Tên sản phẩm</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="name" value='{{product.name}}'>
+                </div>
+            </div>
+        </div>
+
+        <div class="img">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Hình ảnh</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="image" value='{{product.image}}'>
+                </div>
+            </div>
+        </div>
+
+        <div class="cost">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Đơn giá</label>
+                <div class="col-sm-8 flex">
+                    <input type="text" class="form-control w3-input" name="price" value='{{product.price}}'>
+                    <span class="input-group-text col-sm-2">VND</span>
+                </div>
+            </div>
+        </div>
+        <div class="CPU">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">CPU</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="CPU" value='{{product.CPU}}'>
+                </div>
+            </div>
+        </div>
+
+        <div class="RAM">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">RAM</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="RAM" value='{{product.RAM}}'>
+                </div>
+            </div>
+        </div>
+        <div class="pin">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">PIN</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="pin" value='{{product.pin}}'>
+                </div>
+            </div>
+        </div>
+        <div class="harddisk">
+            
+            <div class="mb-1 row">
+                <label  class="col-sm-2 col-form-label">Ổ cứng</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="hard_drive" value='{{product.hard_drive}}'>
+                </div>
+            </div>
+        </div>
+        <div class="VGA">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Card đồ họa</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="graphic_card" value='{{product.graphic_card}}'>
+                </div>
+            </div>
+        </div>
+        <div class="monitor">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Màn hình</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="screen" value='{{product.screen}}'>
+                </div>
+            </div>
+        </div>
+        <div class="HDH">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Hệ điều hành</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="operating_system" value='{{product.operating_system}}'>
+                </div>
+            </div>
+        </div>
+        <div class="weight">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Trọng lượng</label>
+                <div class="col-sm-8">
+                <input type="text" class="form-control w3-input" name="weight" value='{{product.weight}}'>
+                </div>
+            </div>
+        </div>
+        <div class="color">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Màu sắc</label>
+                <div class="col-sm-8">
+                <input type="text" class="form-control w3-input" name="color" value='{{product.color}}'>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sizes">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Kích thước</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="size" value='{{product.size}}'>
+                </div>
+                </div>
+        </div>
+
+        <div class="Baohanh">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Bảo hành</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="warranty" value='{{product.warranty}}'>
+                </div>
+                </div>
+        </div>
+
+        <div class="hangsx">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Tình trạng</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="status" value='{{product.status}}'>
+                </div>
+            </div>  
+        </div>
+
+        <div class="hangsx">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Hãng sản xuất</label>
+                <div class="col-sm-3">
+                    <p id="default-option-value" style="display: none;">{{product.brand}}</p>
+                    <select class="form-select" name="brand" aria-label="Default select example">
+                        <option class="form-option" value="HP">HP</option>
+                        <option class="form-option" value="MSI">MSI</option>
+                        <option class="form-option" value="Lenovo">Lenovo</option>
+                        <option class="form-option" value="Acer">Acer</option>
+                        <option class="form-option" value="Asus">Asus</option>
+                        <option class="form-option" value="Dell">Dell</option>
+                    </select>
+                </div>
+            </div>  
+        </div>
+
+    </form>
+    <div class="addbutton">
+        <button type="button" id="update-btn" class="btn update">Cập nhật</button>
+        <button type="button" id="cancle-btn" class="btn cancel">Hủy bỏ</button> 
+    </div>      
+</div>
+
+<script>
+    const defaultOptionValue = document.querySelector('#default-option-value').textContent;
+    const formOptionElements = document.querySelectorAll('.form-option');
+    formOptionElements.forEach(item => {
+        if (item.textContent === defaultOptionValue) {
+            item.setAttribute('selected', 'selected');
+        }
+    })
+
+    const updateBtn = document.querySelector('#update-btn');
+    updateBtn.addEventListener('click', () => {
+        const editForm = document.forms['edit-form'];
+        editForm.submit();
+    })
+
+    const cancleBtn = document.querySelector('#cancle-btn');
+    cancleBtn.addEventListener('click', () => {
+        const backForm = document.createElement("form");
+        document.body.appendChild(backForm);
+        backForm.style.display = "none";
+        backForm.action = '/admin/product-manager/';
+        backForm.method = "GET";
+        backForm.submit();
+    })
+
+</script>

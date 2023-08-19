@@ -1,0 +1,67 @@
+<div class="user-account">
+    {{#if isAuth}}
+        <div class="nav-item dropdown user-option">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span id="user-name" >{{@root.user.name}}</span>
+            </a>
+            <div id="user-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-item tablet-name">
+                    {{@root.user.name}}
+                </div>
+
+                <form action='/user/profile' method="GET">
+                    <div class="on-hover">
+                        <button  class="dropdown-item" >Thông tin tài khoản</button>
+                    </div>
+                </form>
+
+                {{#ifConds @root.user.role '===' 'client'}}
+                <form action='/client/cart' method="GET">
+                    <div class="on-hover">
+                        <button type="submit" class="dropdown-item" >Giỏ hàng</button>
+                    </div>
+                </form>
+
+                <form action='/client/my-order/waiting' method="GET">
+                    <div class="on-hover">
+                        <button type="submit" class="dropdown-item" >Đơn hàng của tôi</button>
+                    </div>
+                </form>
+                {{/ifConds}}
+
+                {{#ifConds @root.user.role '===' 'admin'}}
+                <form action='/admin/product-manager' method="GET">
+                    <div class="on-hover">
+                        <button type="submit" class="dropdown-item" >Quản lý sản phẩm</button>
+                    </div>
+                </form>
+
+                <form action='/admin/order-manager' method="GET">
+                    <div class="on-hover">
+                        <button type="submit" class="dropdown-item" >Quản lý đơn hàng</button>
+                    </div>
+                </form>
+                {{/ifConds}}
+
+                <form action='/reset-password' method="GET">
+                    <div class="on-hover">
+                        <button  class="dropdown-item" >Đặt lại mật khẩu</button>
+                    </div>
+                </form>
+
+                <form action='/logout' method="GET">
+                    <div class="on-hover">
+                        <button  class="dropdown-item" >Đăng xuất</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {{else}}
+        <nav class="user-account-option">
+            <ul class="hotline_list" >
+                <li class="item separate"> <a href="/login" class="user-account-link">Đăng Nhập</a></li>
+                <li class="item"> <a href="/register" class="user-account-link">Đăng Ký</a></li>
+            </ul>         
+        </nav>
+    {{/if}}
+</div>

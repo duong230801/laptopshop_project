@@ -1,0 +1,154 @@
+<div class="info-detail-page">
+    {{> userAccount}}
+    <div class="info_main">
+        <div class="info_main-2">
+            <div class="info_main_row1">
+                <img class="info_main-imagebig" src="{{laptopInfo.image}}" alt="">
+            </div>
+            <div class="info_main_row2">
+                <table id="customers">
+                    <tr>
+                        <th>CPU</th>
+                        <td>{{laptopInfo.CPU}}</td>
+                    </tr>
+                    <tr>
+                        <th>Màn hình</th>
+                        <td>{{laptopInfo.screen}}</td>
+                    </tr>
+                    <tr>
+                        <th>RAM</th>
+                        <td>{{laptopInfo.RAM}}</td>
+                    </tr>
+                    <tr>
+                        <th>Đồ họa</th>
+                        <td>{{laptopInfo.graphic_card}}</td>
+                    </tr>
+                    <tr>
+                        <th>Lưu trữ</th>
+                        <td>{{laptopInfo.hard_drive}}</td>
+                    </tr>
+                    <tr>
+                        <th>Hệ điều hành</th>
+                        <td>{{laptopInfo.operating_system	}}</td>
+                    </tr>
+                    <tr>
+                        <th>Pin</th>
+                        <td>{{laptopInfo.pin}}</td>
+                    </tr>
+                    <tr>
+                        <th>khối lượng</th>
+                        <td>{{laptopInfo.weight}}</td>
+                    </tr>
+                              
+                </table>
+            </div>
+        </div>
+        <div class="name-money">
+
+            <div class="name-money_title">
+                <h2>{{laptopInfo.name}}</h2>
+            </div>
+
+            <div class="name-money_trademark">
+                <p>Thương hiệu: {{laptopInfo.brand}} </p>
+            </div>
+
+            <div class="name-money_cardnow">
+                <p id="laptop-price">Giá sản phẩm: {{laptopInfo.price}}</p>
+            </div>
+
+            <form class="order-form" method="POST" action='/client/add-to-cart/{{laptopInfo.product_id}}'>
+                <input type="number" id='price' name='price' style="display:none" value= {{laptopInfo.price}}>
+                <input type="text" class="form-control" id="username" name="username" style="display:none" value={{user.username}}>
+                <input type="text" class="form-control" id="product_id" name="product_id" style="display:none" value={{laptopInfo.product_id}}>
+                <div class="edit-group">
+                    <label for="quantity">Số lượng</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1" required>
+                </div>
+                <div class="name-money_transaction">
+                    {{!-- <div class="name-money_buy">
+                        <button class="name-money_buy-btn">Mua ngay</button>
+                    </div> --}}
+                {{#ifConds @root.user.role '===' 'client'}}
+                    <div class="name-money_add"> 
+                        <button type="submit" class="name-money_add-btn">Thêm vào giỏ hàng</button>
+                    </div>
+                {{/ifConds}}
+                </div>
+                <p class="success-message">{{message}}</p>
+            </form>
+
+        </div>
+
+        <div class="other">
+            <div class="other_main">
+                <div class="other_main-header">
+                    <span class="other_main-icon">
+                        <i class="fas fa-truck-loading"></i> 
+                    </span>
+                    <span class="other_main-title">Sản phẩm được miễn phí giao hàng</span>
+                    <div class="other_main-border"></div>
+                </div>
+                <h4 class="other-main-heading">Chính sách bán hàng</h4>
+                <div class="other_main-list">
+                    <span class="other_main-icon2">
+                        <i class="fas fa-truck"></i>
+                    </span>
+                    <span>Miễn phí giao hàng cho đơn hàng từ 800K.</span>
+                </div>
+                <div class="other_main-list">
+                    <span class="other_main-icon2">
+                        <i class="fas fa-user-shield"></i>
+                    </span>
+                    <span>Cam kết hàng chính hãng 100%.</span>
+                </div>
+                <div class="other_main-list">
+                    <span class="other_main-icon2">
+                        <i class="fas fa-undo-alt"></i>
+                    </span>
+                    <span>Đổi trả trong vòng 10 ngày.</span>
+                </div>
+                <h4 class="other-main-heading" style="margin-top: 20px;">Dịch vụ khác</h4>
+                <div class="other_main-list">
+                    <span class="other_main-icon2">
+                        <i class="fas fa-cog"></i>
+                    </span>
+                    <span>Sửa chữa đồng giá 150.000đ.</span>
+                </div>
+                <div class="other_main-list">
+                    <span class="other_main-icon2">
+                        <i class="fas fa-laptop"></i>
+                    </span>
+                    <span>Vệ sinh máy tính, laptop.</span>
+                </div>
+                <div class="other_main-list">
+                    <span class="other_main-icon2">
+                        <i class="fas fa-user-shield"></i>
+                    </span>
+                    <span>Bảo hành tại nhà.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{>footer}}
+
+<script>
+    var laptopPrice = document.querySelector('#laptop-price');
+    var priceElement = laptopPrice.textContent;
+    var price = priceElement.slice(14, priceElement.length);
+    var editPrice = '';
+    var count = 0;
+    for (var i = 0; i < price.length; i++) {
+        if (i < price.length % 3) {
+            editPrice = editPrice.concat(price[i])
+        } else if (i === price.length % 3 || count % 3 === 0) {
+            editPrice = editPrice.concat('.',price[i])
+            count += 1;
+        } else {
+            editPrice = editPrice.concat(price[i])
+            count += 1;
+        }
+    }
+    laptopPrice.textContent = `Giá sản phẩm: ${editPrice}`;
+</script>

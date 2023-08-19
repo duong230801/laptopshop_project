@@ -1,0 +1,15 @@
+const siteRouter = require('./site');
+const productRouter = require('./product');
+const adminRouter = require('./admin');
+const clientRouter = require('./client');
+
+
+
+function route(app) {
+    app.use('/product', productRouter);
+    app.use('/client', clientRouter);
+    app.use('/admin', adminRouter);
+    app.use('/', siteRouter);
+}
+
+module.exports = route;

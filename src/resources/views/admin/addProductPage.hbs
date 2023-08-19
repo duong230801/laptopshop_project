@@ -1,0 +1,189 @@
+<div class="edit-product-page">
+    {{> userAccount}}
+    <h2 class="edit-page-heading">CẬP NHẬT THÔNG TIN SẢN PHẨM</h2>
+    <form name="add-form" class="infor-product" method="POST" action='/admin/product/add'>
+        <div class="name-product">
+                <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Tên sản phẩm</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="name">
+                </div>
+            </div>
+        </div>
+
+        <div class="img">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Hình ảnh</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="image">
+                </div>
+            </div>
+        </div>
+
+        <div class="cost">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Đơn giá</label>
+                <div class="col-sm-8 flex">
+                    <input type="text" class="form-control w3-input" name="price">
+                    <span class="input-group-text col-sm-2">VND</span>
+                </div>
+            </div>
+        </div>
+        <div class="CPU">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">CPU</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="CPU">
+                </div>
+            </div>
+        </div>
+
+        <div class="RAM">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">RAM</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="RAM">
+                </div>
+            </div>
+        </div>
+        <div class="pin">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">PIN</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="pin">
+                </div>
+            </div>
+        </div>
+        <div class="harddisk">
+            
+            <div class="mb-1 row">
+                <label  class="col-sm-2 col-form-label">Ổ cứng</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="hard_drive">
+                </div>
+            </div>
+        </div>
+        <div class="VGA">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Card đồ họa</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="graphic_card">
+                </div>
+            </div>
+        </div>
+        <div class="monitor">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Màn hình</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="screen">
+                </div>
+            </div>
+        </div>
+        <div class="HDH">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Hệ điều hành</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="operating_system">
+                </div>
+            </div>
+        </div>
+        <div class="weight">
+            
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Trọng lượng</label>
+                <div class="col-sm-8">
+                <input type="text" class="form-control w3-input" name="weight">
+                </div>
+            </div>
+        </div>
+        <div class="color">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Màu sắc</label>
+                <div class="col-sm-8">
+                <input type="text" class="form-control w3-input" name="color">
+                </div>
+            </div>
+        </div>
+        
+        <div class="sizes">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Kích thước</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="size">
+                </div>
+                </div>
+        </div>
+
+        <div class="Baohanh">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Bảo hành</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="warranty">
+                </div>
+                </div>
+        </div>
+
+        <div class="hangsx">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Tình trạng</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control w3-input" name="status" >
+                </div>
+            </div>  
+        </div>
+
+        <div class="hangsx">
+            <div class="mb-1 row">
+                <label class="col-sm-2 col-form-label">Hãng sản xuất</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="brand" aria-label="Default select example">
+                        <option class="form-option" selected>--Hãng sản xuất--</option>
+                        <option class="form-option" value="HP">HP</option>
+                        <option class="form-option" value="MSI">MSI</option>
+                        <option class="form-option" value="Lenovo">Lenovo</option>
+                        <option class="form-option" value="Acer">Acer</option>
+                        <option class="form-option" value="Asus">Asus</option>
+                        <option class="form-option" value="Dell">Dell</option>
+                    </select>
+                </div>
+            </div>  
+        </div>
+        <p id="addProductSuccess" style="display: none;">{{@root.addProductSuccess}}</p>
+    </form>
+    <div class="addbutton">
+        <button type="button" id="add-btn" class="btn update">Thêm</button>
+        <button type="button" id="cancle-btn" class="btn cancel">Hủy bỏ</button> 
+    </div>      
+</div>
+
+<script>
+    const addBtn = document.querySelector('#add-btn');
+    addBtn.addEventListener('click', () => {
+        const addForm = document.forms['add-form'];
+        addForm.submit();
+    })
+
+    const cancleBtn = document.querySelector('#cancle-btn');
+    cancleBtn.addEventListener('click', () => {
+        const backForm = document.createElement("form");
+        document.body.appendChild(backForm);
+        backForm.style.display = "none";
+        backForm.action = '/admin/product-manager/';
+        backForm.method = "GET";
+        backForm.submit();
+    })
+
+    const addProductSuccess = document.getElementById('addProductSuccess').textContent;
+    if (addProductSuccess == 'true') {
+        alert('Cập nhật sản phẩm thành công!')
+    } else if (addProductSuccess == 'false'){
+        alert('Cập nhật sản phẩm thất bại!')
+    }
+</script>

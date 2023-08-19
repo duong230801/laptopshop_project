@@ -1,0 +1,92 @@
+<div class="user-infor-page">
+    {{> userAccount}}
+    <div class="user-infor">
+        <div class="profile-avatar">
+            <img class="profile-avatar-img" src="/upload/{{userInfo.avatar}}">
+            {{!-- <a id="change-avatar-link" href="javascript:void(0)">Thay đổi ảnh</a> --}}
+            <form id="edit-avatar-form" method="POST" enctype="multipart/form-data" action="/user/change-avatar?_method=PUT">
+                <input type='file' accept='image/*' name="avatarFile">
+                <button id="save-avatar" type="submit" class="btn btn-primary">Lưu</button>
+            </form>
+        </div>
+            
+        <div class="user-infor_info">
+            <h2>Thông tin tài khoản</h2>
+            <form name="edit-detail-form" method="POST" action="/user/infor/{{userInfo.name}}?_method=PUT">
+                <h4 class="purchased-details-heading">Họ tên:</h4>
+                <input class="purchased-details-info edit-detail-input" name="name" value="{{userInfo.name}}" disabled/> 
+                
+                <h4 class="purchased-details-heading">Tên người dùng:</h4>
+                <input class="purchased-details-info edit-detail-input" name="username" value="{{userInfo.username}}" disabled/> 
+                
+                <h4 class="purchased-details-heading">Giới tính:</h4>
+                <p id="user-gender" style="display: none;">{{userInfo.name}}</p>
+                <select class="purchased-details-info edit-detail-input" name="gender" disabled>
+                    <option value="male">Nam</option>
+                    <option value="female">Nữ</option>
+                    <option value="others">Khác</option>
+                </select>
+                
+                <h4 class="purchased-details-heading">Ngày sinh:</h4>
+                <input type="text" class="purchased-details-info edit-detail-input" name="doB" min="1920-01-01" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{formatTime userInfo.doB "YYYY-MM-DD"}}" disabled>
+                
+                <h4 class="purchased-details-heading">Số điện thoại:</h4>
+                <input class="purchased-details-info edit-detail-input" name="phone" value="{{userInfo.phone}}" disabled/>
+
+                <h4 class="purchased-details-heading">Email:</h4>
+                <input class="purchased-details-info edit-detail-input" name="email" value="{{userInfo.email}}" disabled/> 
+                
+                <h4 class="purchased-details-heading">Địa chỉ:</h4>
+                <input class="purchased-details-info edit-detail-input" name="address" value="{{userInfo.address}}" disabled/> 
+                
+                <h4 class="purchased-details-heading">Tài khoản:</h4>
+                <input class="purchased-details-info user-role-info" name="role" value="{{userInfo.role}}" disabled/> 
+                
+                <div class="user-infor-form-btn">
+                    <button id="edit-order-btn" class="btn btn-warning">Chỉnh sửa</button>
+                    <button id="save-order-btn" type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<p id="edit-info-success" style="display: none;">{{editInfoSuccess}}</p>
+<p id="edit-info-message" style="display: none;">{{editInfoMessage}}</p>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(event){
+        const editDetailBtn = document.querySelector('#edit-order-btn');
+        const editDetailInput = document.querySelectorAll('.edit-detail-input');
+
+        editDetailBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            editDetailInput.forEach(item => {
+                item.disabled = false;
+            })
+        })
+
+        const editUserInfoSuccess = document.getElementById('edit-info-success').textContent;
+        const editUserInfoMessage = document.getElementById('edit-info-message').textContent;
+
+
+        if (editUserInfoSuccess == 'true') {
+            if (editUserInfoMessage === 'changeAvatarSuccess') {
+                alert('Thay đổi avatar thành công!')
+            } else {
+                alert('Cập nhật thông tin thành công!')
+            }
+        } else if (editUserInfoSuccess == 'false') {
+            if (editUserInfoMessage === 'existedEmail') {
+                alert('Cập nhật thông tin thất bại! Email đã được đăng ký trước đó!');
+            } else if (editUserInfoMessage === 'existedUsername') {
+                alert('Cập nhật thông tin thất bại! Tên đăng nhập đã được đăng ký trước đó!')
+            } else if (editUserInfoMessage === 'changeAvatarFail'){
+                alert('Cập nhật thông tin thất bại! Thay đổi avatar không thành công!')
+            }
+            else {
+                alert('Cập nhật thông tin thất bại!')
+            }
+        }
+    })
+</script>

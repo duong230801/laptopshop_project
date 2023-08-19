@@ -1,0 +1,172 @@
+<div class="pt-80 login-page">
+    {{> userAccount}}
+    <div class="login-panel-container">
+        <div class="login-panel-register-container">
+            <h3>LaptopShop</h3>
+            <p>Chất lượng không thể nào thiếu phong cách.</p>
+        </div>
+        <form method="POST" action="/register" class="account-form" id="login-form">
+            <div class="header-login">
+                <h2><b>Đăng ký</b></h2>
+            </div>
+            <div class="name-gender-container">
+                {{!-- Name --}}
+                <div class="form-group mt-4 name-input">
+                    <div class="edit-group">
+                        <input type="text" class="form-input form-control" id="name" name="name" placeholder=" " required>
+                        <label class="information-heading" for="name">Họ và tên</label>
+                    </div>
+                </div>
+                {{!-- Gender --}}
+                <div class="form-group mt-4 gender-input">
+                    <div class="edit-group">
+                        <select name="gender" id="gender">
+                            <option selected>--Giới tính--</option>
+                            <option value="male">Nam</option>
+                            <option value="female">Nữ</option>
+                            <option value="others">Khác</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- Date of Birth --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="text" class="form-input form-control" id="doB" name="doB" placeholder=" " min="1920-01-01" onfocus="(this.type='date')" onblur="(this.type='text')" required>
+                    <label class="information-heading" for="doB">Ngày sinh</label>
+                </div>
+            </div>
+
+            {{!-- Address --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="text" class="form-input form-control" id="address" name="address" placeholder=" " required>
+                    <label class="information-heading" for="address">Địa chỉ</label>
+                </div>
+            </div>
+
+            {{!-- Email --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="email" class="form-input form-control" id="email" name="email" placeholder=" " required>
+                    <label class="information-heading" for="email">Email</label>
+                </div>
+            </div>
+
+            {{!-- Phone --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="tel" class="form-input form-control" id="phone" name="phone" placeholder=" " required>
+                    <label class="information-heading" for="email">Số điện thoại</label>
+                </div>
+            </div>
+
+            {{!-- Username --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="text" class="form-input form-control" id="username" name="username" placeholder=" " required>
+                    <label  class="information-heading" for="username">Tên đăng nhập</label>
+                </div>
+            </div>
+
+            {{!-- Password --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="password" class="form-input form-control pass0" id="password" name="password" placeholder=" " required>
+                    <label class="information-heading" for="password">Nhập mật khẩu</label>
+                    <i class="fas fa-eye unhide-password eye0"></i>
+                    <i class="fas fa-eye-slash hide-password eye-lash0" style="display: none;"></i>
+                </div>
+            </div>
+
+            {{!-- Confirm Password --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="password" class="form-input form-control pass1" id="confirmPassword" name="confirmPassword" placeholder=" " required>
+                    <label class="information-heading" for="confirmPassword">Nhập lại mật khẩu</label>
+                    <i class="fas fa-eye unhide-password eye1"></i>
+                    <i class="fas fa-eye-slash hide-password eye-lash1" style="display: none;"></i>
+                </div>
+            </div>
+
+            <div className="form-group mt-4">
+                {{#if type}}
+                <label id="pass-match-notify" class='success-message'>{{message}}</label>
+                {{else}}
+                <label id="pass-match-notify" class='fail-message'>{{message}}</label>
+                {{/if}}
+            </div>
+
+            <button type="submit" id="submit-btn" disabled='true' class="btn btn-primary">Đăng ký</button>
+        </form>
+    </div>
+</div>
+{{> footer}}
+
+<script>
+    var unhidePassControls = document.querySelectorAll('.unhide-password');
+    var submitBtn = document.querySelector('#submit-btn');
+
+    unhidePassControls.forEach((element, index) => {
+        element.addEventListener('click', ()=> {
+            document.querySelector(`.pass${index}`).type = "text";
+            document.querySelector(`.eye${index}`).style.display = 'none';
+            document.querySelector(`.eye-lash${index}`).style.display = 'inline-block';
+        })
+    })
+
+    var hidePassControls = document.querySelectorAll('.hide-password');
+    hidePassControls.forEach((element, index) => {
+        element.addEventListener('click', ()=> {
+            document.querySelector(`.pass${index}`).type = "password";
+            document.querySelector(`.eye${index}`).style.display = 'inline-block';
+            document.querySelector(`.eye-lash${index}`).style.display = 'none';
+        })
+    })
+
+    var confirmPassword = document.getElementById('confirmPassword');
+    var password = document.getElementById('password');
+    var checkPassMessage = document.getElementById('pass-match-notify');
+
+    var passwordLength, passwordValue;
+    password.addEventListener('change', (e) => {
+        passwordLength = e.target.value.length;
+        passwordValue = e.target.value;
+    });
+
+    confirmPassword.addEventListener('input', (e) => {
+        var inputPass = e.target.value;
+        if (inputPass.length !== passwordLength) {
+            checkPassMessage.textContent = 'Mật khẩu không khớp!';
+            submitBtn.disabled = true;
+            checkPassMessage.classList.add('unmatch-pass');
+        }
+        else if (inputPass.length === passwordLength) {
+            let check = true;
+            for (var i = 0; i < inputPass.length; i++)
+            {
+               if (inputPass[i] !== passwordValue[i]) {
+                    check = false;
+                }
+            }
+            if (check) {
+                checkPassMessage.textContent = 'Mật khẩu trùng khớp.';
+                submitBtn.disabled = false;
+                if(checkPassMessage.classList.contains('unmatch-pass'))
+                {
+                    checkPassMessage.classList.remove('unmatch-pass');
+                }
+                checkPassMessage.classList.add('match-pass');
+            } else {
+                checkPassMessage.textContent = 'Mật khẩu không khớp!';
+                submitBtn.disabled = true;
+                if(checkPassMessage.classList.contains('match-pass'))
+                {
+                    checkPassMessage.classList.remove('match-pass');
+                }
+                checkPassMessage.classList.add('unmatch-pass');
+            }
+        }
+    });
+</script>

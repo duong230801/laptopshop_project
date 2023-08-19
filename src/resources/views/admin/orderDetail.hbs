@@ -1,0 +1,221 @@
+<div class="edit-product-page">
+    {{> userAccount}}
+    <div class="purchased-details">
+        <a href="/admin/order-manager"type="button" class="btn btn-secondary back-btn">Quay lại</a>
+        <form name="edit-detail-form" method="POST" action="/admin/order-manager/details/edit/{{@root.orderDetails.order_id}}?_method=PUT">
+            <h2 class="purchased-details-header">Chi tiết đơn hàng</h2>
+            <h4 class="purchased-details-heading">Mã đơn hàng: 
+                <p class="purchased-details-info">{{@root.orderDetails.order_id}}</p>
+            </h4>
+
+            <h4 class="purchased-details-heading">Họ và tên: 
+                <input id="client-name" class="purchased-details-info edit-detail-input" name="name" value="{{@root.orderDetails.name}}" disabled/> 
+            </h4>
+
+            <h4 class="purchased-details-heading">Ngày đặt hàng: 
+                <input name="order_date" class="purchased-details-info edit-detail-input" type="date" value="{{formatTime @root.orderDetails.order_date "YYYY-MM-DD"}}" disabled/>
+            </h4>
+
+            <h4 class="purchased-details-heading">Ngày chuyển hàng: 
+                <input id="delivery-date" type="date" name="delivery_date" class="purchased-details-info edit-detail-input" value="{{formatTime @root.orderDetails.delivery_date "YYYY-MM-DD"}}" disabled/> 
+            </h4>
+
+            <h4 class="purchased-details-heading">Ngày khách nhận hàng: 
+                <input id="receiving-date" type="date" class="purchased-details-info edit-detail-input" name="receiving_date" value="{{formatTime @root.orderDetails.receiving_date "YYYY-MM-DD"}}" disabled/> 
+            </h4>
+
+            <h4 class="purchased-details-heading">Trạng thái đơn hàng: 
+                <p id="order-status" style="display: none;">{{@root.orderDetails.order_status}}</p>
+                <select class="purchased-details-info edit-detail-input" name="order_status" disabled>
+                    <option class="form-option" value="waiting">Chờ xử lý</option>
+                    <option class="form-option" value="processing">Đang xử lý</option>
+                    <option class="form-option" value="shipping">Đang giao hàng</option>
+                    <option class="form-option" value="done">Hoàn thành</option>
+                </select>
+            </h4>
+
+            <h4 class="purchased-details-heading">Địa chỉ giao hàng: 
+                <input class="purchased-details-info edit-detail-input" name="address" value="{{@root.orderDetails.address}}" disabled/> 
+            </h4>
+
+            <h4 class="purchased-details-heading">SĐT giao hàng: 
+                <input class="purchased-details-info edit-detail-input" name="phone" value="{{@root.orderDetails.phone}}" disabled/> 
+            </h4>
+
+            <h4 class="purchased-details-heading">Ghi chú: 
+                <input class="purchased-details-info edit-detail-input" name="note" value="{{@root.orderDetails.note}}" disabled/> 
+            </h4>
+            <div class="edit-oder-details-btn">
+                <button id="edit-order-btn" class="btn btn-warning">Chỉnh sửa</button>
+                <button id="save-order-btn" type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+        </form>
+
+        <table class="order-item-list">
+            <thead class="order-item-list-head">
+                <tr class="order-item-list-head-row">
+                    <th colspan="1" class="order-item-list-th">STT</th>
+                    <th colspan="1" class="order-item-list-th">Sản phẩm</th>
+                    <th colspan="1" class="order-item-list-th">Mã sản phẩm</th>
+                    <th colspan="1" class="order-item-list-th">Tên sản phẩm</th>
+                    <th colspan="1" class="order-item-list-th">Số lượng</th>
+                    <th colspan="1" class="order-item-list-th">Đơn giá</th>
+                    <th colspan="1" class="order-item-list-th">Tổng tiền</th>
+                    <th colspan="1" class="order-item-list-th">Xoá</th>
+                </tr>
+            </thead>
+            <tbody class="order-item-list-body">
+                {{#each @root.cartList}}
+                <tr class="order-item-list-body-row">
+                    <td class="order-item-list-td">{{sum @index 1}}</td>
+                    <td class="order-item-list-td">
+                        <img class="image_product" src="{{this.product_image}}" alt="">
+                    </td>
+                    <td class="order-item-list-td">{{this.product_id}}</td>
+                    <td class="order-item-list-td">
+                        <a href="/product/{{this.product_id}}"><strong>{{this.product_name}}</strong></a>
+                    </td>
+                    <td class="order-item-list-td">
+                        <form class="edit-cart-quantity-form" method="POST" action="/admin/order-manager/details/edit-cart-quantity/{{@root.orderDetails.order_id}}/{{this.cart_id}}?_method=PUT">
+                            <input type="number" class="form-control quantity_input" id="quantity" name="quantity" min="1" value={{this.quantity}} required>
+                        </form>
+                    </td>
+                    <td id="order-manager-price" class="order-item-list-td">{{this.price}}</td>
+                    <td id="order-manager-price" class="order-item-list-td">{{this.total_amount}}</td>
+                    <td class="order-item-list-td">
+                        <a data-order-id="{{@root.orderDetails.order_id}}" data-cart-id="{{this.cart_id}}" data-toggle="modal" data-target="#delete-order-modal" class="order-del-btn">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tfoot class="order-item-list-foot">
+                <tr class="order-tfoot-item">
+                    <td colspan="8" class="order-total-price"  style="color: red;">
+                        <strong>Tổng tiền:</strong>&nbsp;&nbsp;<p id="order-manager-price">{{@root.orderDetails.price}}</p>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<p id="edit-order-success">{{@root.editOrderSuccess}}</p>
+<form name="delete-order-form" method="POST">
+    <input type="text" style="display: none;" name="cartID">
+</form>
+{{!-- Comfirm delete order --}}
+<div id="delete-order-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa vĩnh viễn sản phẩm?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Hành động này không thể khôi phục lại. Bạn vẫn muốn xóa sản phẩm này?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-order" type="button" class="btn btn-danger">Xóa vĩnh viễn</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+        const deliveryDate = document.querySelector('#delivery-date');
+        if (deliveryDate.textContent === 'Invalid date') {
+            deliveryDate.textContent = 'Đơn hàng chưa được chuyển đi'
+        }
+
+        const receivingDate = document.querySelector('#receiving-date');
+        if (receivingDate.textContent === 'Invalid date') {
+            receivingDate.textContent = 'Đơn hàng chưa được nhận bởi khách khàng'
+        }
+        
+        const priceElement = document.querySelectorAll('#order-manager-price');
+        priceElement.forEach((item) => {
+            var price = item.textContent;
+            var editPrice = '';
+            var count = 0;
+            for (var i = 0; i < price.length; i++) {
+                if (i < price.length % 3) {
+                    editPrice = editPrice.concat(price[i])
+                } else if (i === price.length % 3 || count % 3 === 0) {
+                      if (i !== 0) {
+
+                        editPrice = editPrice.concat('.',price[i])
+
+                    } else {
+
+                        editPrice = editPrice.concat(price[i])
+
+                    }
+
+                    count += 1;
+                } else {
+                    editPrice = editPrice.concat(price[i])
+                    count += 1;
+                }
+            }
+            item.textContent = editPrice + ' đ';
+        })
+
+        let orderID;
+        let cartID;
+        const deleteForm = document.forms['delete-order-form'];
+        const btnDeleteOrder = document.getElementById('btn-delete-order');
+        const deleteOrdeForm = document.querySelector('#delete-order-modal');
+        $('#delete-order-modal').on('show.bs.modal', function (event) {
+            const button =  $(event.relatedTarget);
+            orderId = button.data('order-id');
+            cartID = button.data('cart-id');
+        })
+
+        //When delete order btn clicked
+        btnDeleteOrder.onclick = function () {
+            deleteForm.elements["cartID"].value = cartID;
+            deleteForm.action = "/admin/order-manager/delete-cart/" + orderId + "?_method=DELETE";
+            deleteForm.submit();
+        }
+
+        const editDetailBtn = document.querySelector('#edit-order-btn');
+        const editDetailInput = document.querySelectorAll('.edit-detail-input');
+
+        editDetailBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            editDetailInput.forEach(item => {
+                item.disabled = false;
+            })
+        })
+
+        const defaultOrderStatus = document.querySelector('#order-status');
+        const formOptionElements = document.querySelectorAll('.form-option');
+        formOptionElements.forEach((item) => {
+            if (item.value === defaultOrderStatus.textContent) {
+                item.setAttribute('selected', 'selected');
+            }
+        })
+
+        var editQuantityForms = document.querySelectorAll('.edit-cart-quantity-form');
+        console.log(editQuantityForms);
+        var quantityInputElements = document.querySelectorAll('#quantity');
+        quantityInputElements.forEach((item, index) => {
+            item.addEventListener('change', () => {
+                editQuantityForms[index].submit();
+            });
+        })
+
+        const editOrderStatusSuccess = document.getElementById('edit-order-success').textContent;
+
+        if (editOrderStatusSuccess == 'true') {
+            alert('Cập nhật đơn hàng thành công!')
+        } else if (editOrderStatusSuccess == 'false') {
+            alert('Cập nhật đơn hàng thất bại!')
+        }
+    })
+</script>

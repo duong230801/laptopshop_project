@@ -1,0 +1,172 @@
+<div class="client-order-page">
+    {{> userAccount}}
+    <h2 class="order-list-heading">Danh sách đơn hàng</h2>
+    {{!-- <button class="buttondelete" onclick="document.getElementById('id01').style.display='block'">Xóa</button> --}}
+    {{!-- <div id="id01" class="modal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+        <form class="modal-content" action="#">
+            <div class="container">
+            <h1>Delete Bill</h1>
+            <p>Are you sure you want to delete Bill?</p>
+            
+            <div class="clearfix">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+            </div>
+            </div>
+        </form>
+    </div> --}}
+    <div class="admin-order-list-content">
+        <table class="order-table">
+            <thead class="order-table-head">
+              <tr class="order-table-head-row">
+                <th class="order-table-th"></th>
+				<th class="order-table-th">Mã đơn hàng</th>
+                <th class="order-table-th">Khách hàng</th>
+                <th class="order-table-th">Số điện thoại</th>
+                <th class="order-table-th">Địa chỉ</th>
+				<th class="order-table-th">Ngày đặt hàng</th>
+                <th class="order-table-th">Tổng tiền</th>
+                <th class="order-table-th">Trạng thái</th>
+                <th class="order-table-th">Xóa</th>
+                <th class="order-table-th">Chi tiết</th>
+              </tr>
+            </thead>
+            <tbody class="order-table-body">
+                {{#each orderList}}
+                <tr class="order-table-body-row">
+                    <td class="order-table-td">{{sum @index 1}}</td>
+                    <td class="order-table-td">{{this.order_id}}</td>
+                    <td class="order-table-td">{{this.name}}</td>
+                    <td class="order-table-td">{{this.phone}}</td>
+                    <td class="order-table-td">{{this.address}}</td>
+                    <td class="order-table-td">{{formatTime this.order_date "DD/MM/YY"}}</td>
+                    <td class="order-table-td" id="order-price">{{this.price}}</td>
+                    <td class="order-table-td">
+                        <p id="order-status" style="display: none;">{{this.order_status}}</p>
+                        <form class="edit-order-status-form" method="POST" action="/admin/order-manager/edit-status/{{this.order_id}}?_method=PUT">
+                            <select name="order_status">
+                                <option class="form-option" value="waiting">Chờ xử lý</option>
+                                <option class="form-option" value="processing">Đang xử lý</option>
+                                <option class="form-option" value="shipping">Đang giao hàng</option>
+                                <option class="form-option" value="done">Hoàn thành</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td class="order-table-td">
+                        <a data-id="{{this.order_id}}" data-toggle="modal" data-target="#delete-order-modal" class="order-del-btn">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
+                    </td>
+                    <td class="order-table-td"><a href="/admin/order-manager/details/{{this.order_id}}"><i class="fas fa-forward" ></i></a></td>
+                </tr> 
+                {{/each}}               
+            </tbody>
+        </table>
+    </div>
+    <p id="deleteOrderSuccess" style="display: none;">{{@root.deleteOrderSuccess}}</p>
+    <p id="editOrderStatusSuccess" style="display: none;">{{@root.editOrderStatusSuccess}}</p>
+</div>
+{{>footer}}
+
+<form name="delete-order-form" method="POST"></form>
+{{!-- Comfirm delete order --}}
+<div id="delete-order-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa vĩnh viễn đơn hàng?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Hành động này không thể khôi phục lại. Bạn vẫn muốn xóa đơn hàng này?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-order" type="button" class="btn btn-danger">Xóa vĩnh viễn</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+        var laptopPriceElementList = document.querySelectorAll('#order-price');
+        laptopPriceElementList.forEach((item) => {
+            var price = item.textContent;
+            var editPrice = '';
+            var count = 0;
+            for (var i = 0; i < price.length; i++) {
+                if (price.length % 3 !== 0) {
+                    if (i < price.length % 3) {
+                        editPrice = editPrice.concat(price[i])
+                    }         
+                    else if (i === price.length % 3 || count % 3 === 0) {
+                        if (price.length % 3 === 0) {
+                            editPrice = editPrice.concat(price[i])
+                        } else {
+                            editPrice = editPrice.concat('.',price[i])
+                            count += 1;
+                        }
+                    } else {
+                        editPrice = editPrice.concat(price[i])
+                        count += 1;
+                    }
+                }
+                else {
+                    if (count !== 0 && count % 3 === 0) {
+                        editPrice = editPrice.concat('.',price[i])
+                    } else {
+                        editPrice = editPrice.concat(price[i])
+                    }
+                    count += 1;
+                }
+            }
+            item.textContent = ' ' + editPrice + ' đ';
+        })
+
+        const defaultOrderStatus = document.querySelectorAll('#order-status');
+        const formOptionElements = document.querySelectorAll('.form-option');
+        formOptionElements.forEach((item, index) => {
+            let temp = index + 1;
+            let textIndex = Math.round((temp + 1)/4);
+            if (item.value === defaultOrderStatus[textIndex-1].textContent) {
+                item.setAttribute('selected', 'selected');
+            }
+        })
+
+        const deleteOrderSuccess = document.getElementById('deleteOrderSuccess').textContent;
+        const editOrderStatusSuccess = document.getElementById('editOrderStatusSuccess').textContent;
+
+        if (deleteOrderSuccess == 'true' || editOrderStatusSuccess == 'true') {
+            alert('Cập nhật đơn hàng thành công!')
+        } else if (deleteOrderSuccess == 'false'|| editOrderStatusSuccess == 'false') {
+            alert('Cập nhật đơn hàng thất bại!')
+        }
+
+
+        const editOrderStatusForms = document.querySelectorAll('.edit-order-status-form');
+        editOrderStatusForms.forEach((form) => {
+            form.addEventListener('change', () => {
+                form.submit();
+            })
+        })
+
+        let orderId;
+        const deleteForm = document.forms['delete-order-form'];
+        const btnDeleteOrder = document.getElementById('btn-delete-order');
+        const deleteOrdeForm = document.querySelector('#delete-order-modal');
+        $('#delete-order-modal').on('show.bs.modal', function (event) {
+            const button =  $(event.relatedTarget)
+            orderId = button.data('id') 
+        })
+
+        //When delete order btn clicked
+        btnDeleteOrder.onclick = function () {
+            deleteForm.action = "/admin/order-manager/delete/" + orderId + "?_method=DELETE";
+            deleteForm.submit();
+        }
+    });
+</script>

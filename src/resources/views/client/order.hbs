@@ -1,0 +1,93 @@
+<div class="client-order-page">
+    {{> userAccount}}
+    <h2 class="order-list-heading">Đơn hàng của tôi</h2>
+    <div class="order-list-content">
+        {{#each orderObjectList}}
+            <div class="order-item">
+                <h3>Mã đơn hàng: {{this.order_id}}</h3>
+                <div class="order-status">
+                    Trạng thái: 
+                    <p class="order-status-info">{{this.order_status}}</p>
+                </div>
+                <div class="cart-list">
+                    {{#each this.cart_items}}
+                        <div class="cart-cointaner">
+                            <div class="cart-item">
+                                <div class="cart-image-container">
+                                    <img class='cart-image' src="{{this.product_image}}" alt="hình ảnh sản phẩm">
+                                </div>
+                                <div class="cart-info">
+                                    <p class="product-name">Tên sản phẩm: {{this.product_name}}</p>
+                                    <p class="product-price">Giá:<p id="price">{{this.price}}</p></p>
+                                    <p class="quantity">Số lượng: {{this.quantity}}</p>
+                                </div>
+                            </div>
+                            <div class="total-amount">
+                                Tổng:<p id="price">{{this.total_amount}}</p>
+                            </div>
+                        </div>
+                    {{/each}}
+                    <div class="order-price">Tổng tiền:<p id="price">{{this.order_price}}</p></div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
+{{>footer}}
+
+<script>
+
+    var laptopPriceElementList = document.querySelectorAll('#price');
+    laptopPriceElementList.forEach((item) => {
+        var price = item.textContent;
+        var editPrice = '';
+        var count = 0;
+        for (var i = 0; i < price.length; i++) {
+            if (price.length % 3 !== 0) {
+                if (i < price.length % 3) {
+                    editPrice = editPrice.concat(price[i])
+                }         
+                else if (i === price.length % 3 || count % 3 === 0) {
+                    if (price.length % 3 === 0) {
+                        editPrice = editPrice.concat(price[i])
+                    } else {
+                        editPrice = editPrice.concat('.',price[i])
+                        count += 1;
+                    }
+                } else {
+                    editPrice = editPrice.concat(price[i])
+                    count += 1;
+                }
+            }
+            else {
+                if (count !== 0 && count % 3 === 0) {
+                    editPrice = editPrice.concat('.',price[i])
+                } else {
+                    editPrice = editPrice.concat(price[i])
+                }
+                count += 1;
+            }
+        }
+        item.textContent = ' ' + editPrice + ' đ';
+    })
+
+    var orderStatusElements = document.querySelectorAll('.order-status-info');
+    orderStatusElements.forEach(item => {
+        switch (item.textContent) {
+            case 'waiting': 
+                item.textContent = 'Chờ xác nhận';
+                break;
+            case 'processing': 
+                item.textContent = 'Đang xử lý';
+                break;
+            case 'shipping': 
+                item.textContent = 'Đang giao hàng';
+                break;
+            case 'done': 
+                item.textContent = 'Đã hoàn thành';
+                break;
+            default: 
+                break;
+        }
+    })
+</script>

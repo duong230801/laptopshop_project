@@ -1,0 +1,38 @@
+<header class="header"> 
+    <div class="grid">
+        <nav class="title">
+            <img class="header_img" src="https://scontent.fsgn5-10.fna.fbcdn.net/v/t1.15752-9/261358669_197540765908604_5776618385573065245_n.png?_nc_cat=107&ccb=1-5&_nc_sid=ae9488&_nc_ohc=03gBEIw5-QoAX_W486b&_nc_ht=scontent.fsgn5-10.fna&oh=0237b3994be0c06a37ac8a57b14ef5a7&oe=61C9D753"  alt="logo">
+            <div class="menu">
+                <ul class="list">
+                    <li class="list_item"> <a href="/" class="item_link"><strong>Trang Chủ</strong> </a></li>
+                </ul>
+                <form id="search-form" class="search_box">
+                    <input id="search-info"  class="search-txt" type="text" placeholder="Tìm kiếm sản phẩm">
+                    <button type="submit" id="search-btn" class="search-btn">
+                        <i class="fas fa-search search-icon"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="nav__bars-btn">
+                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" class="svg-inline--fa fa-list-ul fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M48 48a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm0 160a48 48 0 1 0 48 48 48 48 0 0 0-48-48zm448 16H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></svg>
+            </div>
+        </nav>
+        <div class="nav_mobile_overlay"></div>
+        <div class="menu">
+            <ul class="list">
+                <li class="list_item"> <a href="/" class="item_link"><strong>Trang Chủ</strong> </a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<script>
+    var searchTxt = document.querySelector('#search-info');
+    var searchForm = document.querySelector('#search-form');
+    var searchBtn = document.querySelector('#search-btn');
+    searchBtn.addEventListener('click', () => {
+        var searchInfo = searchTxt.value;
+        searchForm.action = '/product/search/' + searchInfo;
+        searchForm.submit();
+    })
+</script>

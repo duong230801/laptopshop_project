@@ -1,0 +1,144 @@
+<div class="client-cart-page">
+    {{> userAccount}}
+    <div class="basket">
+        <div class="basket_name-header"><h2>Giỏ hàng</h2></div>
+        <table class="cart-table">
+            <thead class="cart-thead">
+                <tr class="cart-thead-row">
+                    <th class="cart-th" >Sản phẩm</th>
+                    <th class="cart-th" >Tên sản phẩm</th>
+                    <th class="cart-th" >Số lượng</th>
+                    <th class="cart-th" >Giá tiền</th>
+                    <th class="cart-th" >Xoá</th>
+                </tr>
+            </thead>
+            <tbody class="cart-body">
+                {{#each cartList}}
+                <tr class="cart-item">
+                    <td class="cart-td">
+                        <div>
+                            <img class="image_product" src={{this.image}} alt="item"/>
+                        </div>
+                    </td>
+                    <td class="cart-td name_product">
+                        <a href="#"><strong>{{this.name}}</strong></a>
+                    </td>
+                    <td class="cart-td quantity_product">
+                        <form class="edit-cart-quantity-form" method="POST" action="/client/cart/edit-quantity/{{this.cart_id}}">
+                            <input type="number" class="form-control quantity_input" id="quantity" name="quantity" min="1" value={{this.quantity}} required>
+                        </form>
+                    </td>
+                    <td class="cart-td money_product" id='price'>{{this.price}}</td>
+                    <td class="cart-td clear_product">
+                        <form method="POST" action="/client/cart/delete-item/{{this.cart_id}}?_method=DELETE">
+                            <button type='submit' class="cart-item-delete-btn">
+                                <i class="clear_product-btn fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tfoot class="cart-tfoot">
+                <tr class="cart-tfoot-item">
+                    <td colspan="4" class="cart-tfoot-td sum_product">
+                        <strong>Tổng tiền:</strong> 
+                    </td>
+                    <td class="cart-tfoot-td">
+                        <strong id="total-amount"></strong>  
+                    </td>
+                </tr>
+                <tr class="cart-tfoot-item">
+                    <td colspan="5" class="cart-tfoot-td note_product">
+                        <form class="create-order-form" method="POST" action="/client/create-order" name="create-order-form">
+                            {{#each cartList}}
+                                <input type="text" name="cart-id" style="display: none" value={{this.cart_id}}>
+                            {{/each}}
+                            <input class="note_product-text" name="note" type="text" placeholder="Ghi chú"/>
+                        </form>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="payupdate">
+            <button id="order-btn" class="payupdate-pay">Đặt hàng</button>
+            {{!-- <button class="payupdate-update">Cập nhật</button> --}}
+        </div>
+    </div>
+</div>
+{{>footer}}
+
+<script>
+    var laptopPriceElement = Array.from(document.querySelectorAll('#price'));
+    var laptopPriceList = laptopPriceElement.map((item) => {
+        return parseInt(item.textContent);
+    });
+
+    var totalAmountElement = document.querySelector('#total-amount');
+    var totalAmount;
+
+    function findTotalAmount () {
+        var itemQuantityElement = Array.from(document.querySelectorAll('#quantity'));
+
+        var itemQuantityList = itemQuantityElement.map((item) => {
+            return parseInt(item.value);
+        });
+
+        totalAmount = itemQuantityList.reduce((totalAmount, currValue, index) => {
+
+            return totalAmount + currValue * laptopPriceList[index];
+        },0);
+
+        var totalAmountText = '';
+        var count = 0;
+        for (var i = 0; i < totalAmount.toString().length; i++) {
+            if (i < totalAmount.toString().length % 3) {
+                totalAmountText = totalAmountText.concat(totalAmount.toString()[i])
+            } else if (i !== 0 &&  (i === totalAmount.toString().length % 3 || count % 3 === 0 )) {
+                totalAmountText = totalAmountText.concat('.',totalAmount.toString()[i])
+                count += 1;
+            } else {
+                totalAmountText = totalAmountText.concat(totalAmount.toString()[i])
+                count += 1;
+            }
+        }
+        totalAmountElement.textContent = totalAmountText + ' đ';
+        
+    }
+    findTotalAmount();
+
+
+    var editQuantityForm = document.querySelectorAll('.edit-cart-quantity-form');
+    var quantityInputElement = document.querySelectorAll('#quantity');
+    quantityInputElement.forEach((item, index) => {
+        item.addEventListener('change', () => {
+            findTotalAmount();
+            editQuantityForm[index].submit();
+        });
+    })
+
+    var laptopPriceElementList = document.querySelectorAll('#price');
+    laptopPriceElementList.forEach((item) => {
+        var price = item.textContent;
+        var editPrice = '';
+        var count = 0;
+        for (var i = 0; i < price.length; i++) {
+            if (i < price.length % 3) {
+                editPrice = editPrice.concat(price[i])
+            } else if (i === price.length % 3 || count % 3 === 0) {
+                editPrice = editPrice.concat('.',price[i])
+                count += 1;
+            } else {
+                editPrice = editPrice.concat(price[i])
+                count += 1;
+            }
+        }
+        item.textContent = editPrice + ' đ';
+    })
+
+    var orderBtn = document.querySelector('#order-btn');
+    var createOrderForm = document.forms['create-order-form'];
+    orderBtn.addEventListener('click', () => {
+        createOrderForm.submit();
+    })
+</script>

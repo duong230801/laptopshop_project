@@ -1,0 +1,40 @@
+<div class="login-page">
+    {{> userAccount}}
+    <div class="login-panel-container">
+        <div class="login-panel-img-container">
+            <img src="https://scontent.fsgn5-6.fna.fbcdn.net/v/t1.15752-9/262867407_583064142989750_1883845094910245215_n.png?_nc_cat=106&ccb=1-5&_nc_sid=ae9488&_nc_ohc=tYyuf_vM6RsAX9xd0ej&_nc_ht=scontent.fsgn5-6.fna&oh=b00a6d3af04e114ffa1959ae5dfc58d7&oe=61CC836D" alt="" style="width: 70%">
+            <h3>Nếu bạn chưa có tài khoản!</h3>
+            <i class="fas fa-hand-point-down"></i>
+            <p></p>
+            <button type="button" class="btn btn-registerleft"><a id="register-btn" href="/register">Đăng Kí</a></button>
+        </div>
+        <form method="POST" action="/login" class="account-form" id="login-form">
+            {{!-- Username --}}
+            <div class="header-login">
+                <h2><b>Đăng Nhập</b></h2>
+            </div>
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="text" style="background-color:white!important" class="form-input form-control" id="username" name="username" placeholder=" " required>
+                    <label  class="information-heading" for="username">Tên đăng nhập</label>
+                </div>
+            </div>
+
+            {{!-- Password --}}
+            <div class="form-group mt-4">
+                <div class="edit-group">
+                    <input type="password" class="form-input form-control pass0" id="password" name="password" placeholder=" " required>
+                    <label class="information-heading" for="password">Nhập mật khẩu</label>
+                </div>
+            </div>
+
+            <div className="form-group mt-4">
+                <label class="fail-message">{{message}}</label>
+            </div>
+
+            <button type="submit" class="btn-login">Đăng nhập</button>
+
+        </form>
+    </div>
+</div>
+{{> footer}}
